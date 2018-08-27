@@ -4,9 +4,10 @@
 
 
 from uagame import Window
-from pygame import QUIT
+from pygame import QUIT, Color
 from pygame.time import Clock
 from pygame.event import get as get_events
+from pygame.draw import circle as draw_circle
 
 
 def main():
@@ -35,9 +36,11 @@ def play_game():
     close_selected = False
     while not close_selected:
         # play frame
+        #    handle events
         close_selected = handle_events()
-        # draw game
-        # update game
+
+        #   draw game
+        #   update game
 
 
 def handle_events():
@@ -55,6 +58,12 @@ def draw_game():
     # draw big dot
     # update display
     pass
+
+
+def draw_dot(window, color_string, center, radius):
+    surface = window.get_surface()
+    color = Color(color_string)
+    draw_circle(surface, color, center, radius)
 
 
 def update_game():
