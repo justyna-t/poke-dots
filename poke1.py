@@ -85,7 +85,8 @@ def move_dot(window, center, radius, velocity):
     for index in range(2):
         # update center at index
         center[index] += velocity[index]
-        if center[index] + radius >= size[index]:
+        if center[index] + radius >= size[index] or\
+           center[index] - radius <= 0:
             velocity[index] = -velocity[index]
 
 
