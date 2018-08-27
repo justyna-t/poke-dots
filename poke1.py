@@ -56,6 +56,7 @@ def handle_events():
 
 
 def draw_game(window, big_color, big_center, big_radius):
+    window.clear()
     # draw small dot
 
     # draw big dot
