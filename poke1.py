@@ -22,7 +22,7 @@ def main():
     big_radius = 40
     big_center = [200, 100]
     big_velocity = [2, 1]
-    play_game()
+    play_game(window, big_color, big_center, big_radius)
     window.close()
 
 
@@ -32,7 +32,7 @@ def create_window():
     return window
 
 
-def play_game():
+def play_game(window, big_color, big_center, big_radius):
     close_selected = False
     while not close_selected:
         # play frame
@@ -40,6 +40,7 @@ def play_game():
         close_selected = handle_events()
 
         #   draw game
+        draw_game(window, big_color, big_center, big_radius)
         #   update game
 
 
@@ -53,11 +54,14 @@ def handle_events():
     return closed
 
 
-def draw_game():
+def draw_game(window, big_color, big_center, big_radius):
     # draw small dot
+
     # draw big dot
+    draw_dot(window, big_color, big_center, big_radius)
+
     # update display
-    pass
+    window.update()
 
 
 def draw_dot(window, color_string, center, radius):
