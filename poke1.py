@@ -4,16 +4,22 @@
 
 
 from uagame import Window
-
+from pygame.time import Clock
 
 def main():
     window = create_window()
     # create game
-    #    create clock
-    #    create small dot
-    #    create big dot
-    # play game
-    # close window
+    clock = Clock()
+    small_color = "blue"
+    small_radius = 30
+    small_center = [50, 100]
+    small_velocity = [1, 2]
+    big_color = "blue"
+    big_radius = 40
+    big_center = [200, 100]
+    big_velocity = [2, 1]
+    play_game()
+    window.close()
 
 
 def create_window():
