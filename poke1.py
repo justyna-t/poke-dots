@@ -4,7 +4,10 @@
 
 
 from uagame import Window
+from pygame import QUIT
 from pygame.time import Clock
+from pygame.event import get as get_events
+
 
 def main():
     window = create_window()
@@ -29,20 +32,22 @@ def create_window():
 
 
 def play_game():
-    # while not player has selected close
+    close_selected = False
+    while not close_selected:
         # play frame
-            # handle events
-            # draw game
-            # update game
-    pass
+        close_selected = handle_events()
+        # draw game
+        # update game
 
 
 def handle_events():
-    # for event in event list
+    closed = False
+    event_list = get_events()
+    for event in event_list:
         # handle one event
-            # if event category equals close
-                # remember player has selected close
-    pass
+        if event.type == QUIT:
+            closed = True
+    return closed
 
 
 def draw_game():
