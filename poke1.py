@@ -79,13 +79,12 @@ def update_game(clock):
     clock.tick(frame_rate)
 
 
-def move_dot():
-    # for index in sequence o to 1
+def move_dot(center, velocity):
+    for index in range(2):
         # update center at index
-            # add velocity at index to center at index
-            # if dot edge outside window
-                # negate velocity at index
-    pass
+        center[index] += velocity[index]
+        # if dot edge outside window
+        #   negate velocity at index
 
 
 main()
