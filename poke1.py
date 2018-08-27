@@ -14,15 +14,16 @@ def main():
     window = create_window()
     # create game
     clock = Clock()
-    small_color = "blue"
-    small_radius = 30
+    small_color = "red"
     small_center = [50, 100]
+    small_radius = 30
     small_velocity = [1, 2]
+    small_dot = [small_color, small_center, small_radius, small_velocity]
     big_color = "blue"
-    big_radius = 40
     big_center = [200, 100]
+    big_radius = 40
     big_velocity = [2, 1]
-    play_game(window, big_color, big_center, big_radius, big_velocity, clock)
+    play_game(window, small_dot, big_color, big_center, big_radius, big_velocity, clock)
     window.close()
 
 
@@ -32,7 +33,7 @@ def create_window():
     return window
 
 
-def play_game(window, big_color, big_center, big_radius, big_velocity, clock):
+def play_game(window, small_dot, big_color, big_center, big_radius, big_velocity, clock):
     close_selected = False
     while not close_selected:
         # play frame
@@ -40,9 +41,9 @@ def play_game(window, big_color, big_center, big_radius, big_velocity, clock):
         close_selected = handle_events()
 
         #   draw game
-        draw_game(window, big_color, big_center, big_radius)
+        draw_game(window, small_dot, big_color, big_center, big_radius)
         #   update game
-        update_game(window, big_center, big_radius, big_velocity, clock)
+        update_game(window, small_dot, big_center, big_radius, big_velocity, clock)
 
 
 def handle_events():
@@ -55,9 +56,10 @@ def handle_events():
     return closed
 
 
-def draw_game(window, big_color, big_center, big_radius):
+def draw_game(window, small_dot, big_color, big_center, big_radius):
     window.clear()
     # draw small dot
+    draw_dot(window, small_dot[0], small_dot[1], small_dot[2])
 
     # draw big dot
     draw_dot(window, big_color, big_center, big_radius)
@@ -72,9 +74,10 @@ def draw_dot(window, color_string, center, radius):
     draw_circle(surface, color, center, radius)
 
 
-def update_game(window, big_center, big_radius, big_velocity, clock):
+def update_game(window, small_dot, big_center, big_radius, big_velocity, clock):
     frame_rate = 90
     # move small dot
+    move_dot(window, small_dot[1], small_dot[2], small_dot[3])
     # move big dot
     move_dot(window, big_center, big_radius, big_velocity)
     # control frame rate
