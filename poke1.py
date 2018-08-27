@@ -3,15 +3,23 @@
 # the edges.
 
 
+from uagame import Window
+
+
 def main():
-    # create window
+    window = create_window()
     # create game
-        # create clock
-        # create small dot
-        # create big dot
+    #    create clock
+    #    create small dot
+    #    create big dot
     # play game
     # close window
-    pass
+
+
+def create_window():
+    window = Window("Poke the Dots", 500, 400)
+    window.set_bg_color("black")
+    return window
 
 
 def play_game():
