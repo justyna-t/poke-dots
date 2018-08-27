@@ -42,7 +42,7 @@ def play_game(window, big_color, big_center, big_radius, big_velocity, clock):
         #   draw game
         draw_game(window, big_color, big_center, big_radius)
         #   update game
-        update_game(big_center, big_velocity, clock)
+        update_game(window, big_center, big_radius, big_velocity, clock)
 
 
 def handle_events():
@@ -71,21 +71,22 @@ def draw_dot(window, color_string, center, radius):
     draw_circle(surface, color, center, radius)
 
 
-def update_game(big_center, big_velocity, clock):
+def update_game(window, big_center, big_radius, big_velocity, clock):
     frame_rate = 90
     # move small dot
     # move big dot
-    move_dot(big_center, big_velocity)
+    move_dot(window, big_center, big_radius, big_velocity)
     # control frame rate
     clock.tick(frame_rate)
 
 
-def move_dot(center, velocity):
+def move_dot(window, center, radius, velocity):
+    size = [window.get_width(), window.get_height()]
     for index in range(2):
         # update center at index
         center[index] += velocity[index]
-        # if dot edge outside window
-        #   negate velocity at index
+        if center[index] + radius >= size[index]:
+            velocity[index] = -velocity[index]
 
 
 main()
