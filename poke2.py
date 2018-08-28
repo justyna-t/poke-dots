@@ -13,16 +13,7 @@ from pygame.draw import circle as draw_circle
 def main():
     window = create_window()
     game = create_game(window)
-    small_color = "red"
-    small_center = [50, 100]
-    small_radius = 30
-    small_velocity = [1, 2]
-    small_dot = [small_color, small_center, small_radius, small_velocity]
-    big_color = "blue"
-    big_center = [200, 100]
-    big_radius = 40
-    big_velocity = [2, 1]
-    play_game(game, small_dot, big_color, big_center, big_radius, big_velocity)
+    play_game(game)
     window.close()
 
 
@@ -40,31 +31,31 @@ def create_game(window):
     game.frame_rate = 90 # larger is faster game
     game.close_selected = False
     game.clock = Clock()
+    game.small_dot = create_dot("red", [50, 100], 30, [1, 2])
+    game.big_dot = create_dot("blue", [200, 100], 40, [2, 1])
     return game
 
 
-def play_game(game, small_dot, big_color, big_center, big_radius, big_velocity):
+def create_dot(color, center, radius, velocity):
+    dot = Dot()
+    dot.color = color
+    dot.center = center
+    dot.radius = radius
+    dot.velocity = velocity
+    return dot
+
+
+def play_game(game):
     # Play the game until the player presses the close icon.
     # - game is the Game to play
-    # - small_dot is the list of the small dot's attributes, such as color,
-    # center, radius and velocity. Color is the str, center is the list of
-    # x int and y int coordinates of the center of the dot, radius is the
-    # int radius of the dot, velocity is the list of horizontal int and
-    # vertical int speeds of the dot
-    # - big_color is the str color of the big dot
-    # - big_center is the list of x int and y int coordinates of the center of
-    # the big dot
-    # - big_radius is the int radius of the big dot
-    # - big_velocity is the list of horizontal int and vertical int speeds of
-    # the big dot
     while not game.close_selected:
         # play frame
         #    handle events
         handle_events(game)
         #   draw game
-        draw_game(game, small_dot, big_color, big_center, big_radius)
+        draw_game(game)
         #   update game
-        update_game(game, small_dot, big_center, big_radius, big_velocity)
+        update_game(game)
 
 
 def handle_events(game):
@@ -78,91 +69,77 @@ def handle_events(game):
             game.close_selected = True
 
 
-def draw_game(game, small_dot, big_color, big_center, big_radius):
+def draw_game(game):
     # Draw all game objects.
     # - game
-    # - small_dot is the list of the small dot's attributes, such as color,
-    # center, radius and velocity. Here needed only color, center and radius.
-    # Color is the str, center is the list of x int and y int coordinates of
-    # the center of the dot, radius is the int radius of the dot.
-    # - big_color is the str color of the big dot
-    # - big_center is the list of x int and y int coordinates
-    # of the center of the big dot
-    # - big_radius is the int radius of the big dot
     game.window.clear()
     # draw small dot
-    draw_dot(game, small_dot[0], small_dot[1], small_dot[2])
+    draw_dot(game.window, game.small_dot)
 
     # draw big dot
-    draw_dot(game, big_color, big_center, big_radius)
+    draw_dot(game.window, game.big_dot)
 
     # update display
     game.window.update()
 
 
-def draw_dot(game, color_string, center, radius):
+def draw_dot(window, dot):
     # Draw the dot on the window.
-    # - game
-    # - color_string is the str color of the dot
-    # - center is the list of x int and y int coordinates of the center of
-    # the dot
-    # - radius is the int radius of the dot
-    surface = game.window.get_surface()
-    color = Color(color_string)
-    draw_circle(surface, color, center, radius)
+    # - window
+    # - dot is the Dot to be drawn
+    surface = window.get_surface()
+    color = Color(dot.color)
+    draw_circle(surface, color, dot.center, dot.radius)
 
 
-def update_game(game, small_dot, big_center, big_radius, big_velocity):
+def update_game(game):
     # Update all game objects with state changes that are not due to
     # user events.
     # - game
-    # - small_dot is the list of the small dot's attributes, such as color,
-    # center, radius and velocity. Here needed only center, radius and
-    # velocity. Center is the list of x int and y int coordinates of the
-    # center of the dot, radius is the int radius of the dot, velocity is the
-    # list of horizontal int and vertical int speeds of the dot
-    # - big_center is the list of x int and y int coordinates
-    # of the center of the big dot
-    # - big_radius is the int radius of the big dot
-    # - big_velocity is the list of horizontal int and vertical
-    # int speeds of the big dot
 
     # move small dot
-    move_dot(game, small_dot[1], small_dot[2], small_dot[3])
+    move_dot(game.window, game.small_dot)
     # move big dot
-    move_dot(game, big_center, big_radius, big_velocity)
+    move_dot(game.window, game.big_dot)
     # control frame rate
     game.clock.tick(game.frame_rate)
 
 
-def move_dot(game, center, radius, velocity):
+def move_dot(window, dot):
     # Change the location and the velocity of the dot so it remains on the
     # surface by bouncing from its edges.
-    # - game
+    # - window
+    # - dot is the Dot to be moved
+    size = [window.get_width(), window.get_height()]
+    for index in range(2):
+        # update center at coordinate
+        dot.center[index] += dot.velocity[index]
+        # dot edge outside window?
+        if dot.center[index] + dot.radius >= size[index] or\
+           dot.center[index] - dot.radius <= 0:
+            # change direction
+            dot.velocity[index] = -dot.velocity[index]
+
+
+class Game:
+    # An object in this class represents a complete game
+    # - window is the Window to play in
+    # - frame_rate
+    # - close_selected
+    # - clock is a Clock used to control game speed
+    # - small_dot
+    # - big_dot
+    pass
+
+
+class Dot:
+    # An object in this class represents a dot
+    # - color is the str color of the dot
     # - center is the list of x int and y int coordinates of the center of
     # the dot
     # - radius is the int radius of the dot
     # - velocity is the list of horizontal int and vertical int speeds of
     # the dot
-    size = [game.window.get_width(), game.window.get_height()]
-    for index in range(2):
-        # update center at coordinate
-        center[index] += velocity[index]
-        # dot edge outside window?
-        if center[index] + radius >= size[index] or\
-           center[index] - radius <= 0:
-            # change direction
-            velocity[index] = -velocity[index]
-
-
-class Game:
-    # An object in this class represents a complete game
-    # - window
-    # - frame_rate
-    # - close_selected
-    # - clock
-    # - small_dot
-    # - big_dot
     pass
 
 
