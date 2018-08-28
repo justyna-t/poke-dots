@@ -34,6 +34,16 @@ def create_window():
     return window
 
 
+def create_game(window):
+    #  Create a Game object for Poke the Dots
+    game = Game()
+    game.window = window
+    game.frame_rate = 90 # larger is faster game
+    game.close_selected = False
+    game.clock = Clock()
+    return game
+
+
 def play_game(window, small_dot, big_color, big_center, big_radius, big_velocity, clock):
     # Play the game until the player presses the close icon.
     # - window is the Window to play in
