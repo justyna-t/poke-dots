@@ -151,4 +151,15 @@ def move_dot(window, center, radius, velocity):
             velocity[index] = -velocity[index]
 
 
+class Game:
+    # An object in this class represents a complete game
+    # - window
+    # - frame_rate
+    # - close_selected
+    # - clock
+    # - small_dot
+    # - big_dot
+    pass
+
+
 main()
