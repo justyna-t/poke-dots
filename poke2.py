@@ -128,7 +128,7 @@ def move_dot(window, dot):
 
 
 class Game:
-    # An object in this class represents a complete game
+    # An object in this class represents a complete game.
     # - window
     # - frame_rate
     # - close_selected
@@ -139,7 +139,7 @@ class Game:
 
 
 class Dot:
-    # An object in this class represents a dot
+    # An object in this class represents a colored circle that can move.
     # - color
     # - center
     # - radius
