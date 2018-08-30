@@ -85,19 +85,19 @@ def draw_game(game):
     # - game is the Game to draw for
 
     game.window.clear()
-    draw_score(game.window)
+    draw_score(game)
     draw_dot(game.window, game.small_dot)
     draw_dot(game.window, game.big_dot)
     game.window.update()
 
 
-def draw_score(window):
+def draw_score(game):
     # Draw scoreboard until the player presses the close icon.
-    # - window is the Window that the game is played in
-    score = get_ticks() / 1000  # turn milisecods to seconds
-    score_string = "Score: %d" % score
-    window.draw_string(score_string, 0 , 0)
-    window.set_font_size(70)
+    #- game is the Game to draw for
+    game.score = get_ticks() / 1000  # turn milisecods to seconds
+    score_string = "Score: %d" % game.score
+    game.window.draw_string(score_string, 0 , 0)
+    game.window.set_font_size(70)
 
 
 def draw_dot(window, dot):
