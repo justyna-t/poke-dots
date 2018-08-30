@@ -5,7 +5,7 @@
 
 from uagame import Window
 from random import randint
-from pygame import QUIT, Color
+from pygame import QUIT, MOUSEBUTTONUP, Color
 from pygame.time import Clock, get_ticks
 from pygame.event import get as get_events
 from pygame.draw import circle as draw_circle
@@ -90,6 +90,9 @@ def handle_events(game):
         # handle one event
         if event.type == QUIT:
             game.close_selected = True
+        elif event.type == MOUSEBUTTONUP:
+                randomize_dot(game.window, game.small_dot)
+                randomize_dot(game.window, game.big_dot)
 
 
 def draw_game(game):
