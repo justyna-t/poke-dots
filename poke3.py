@@ -4,6 +4,7 @@
 
 
 from uagame import Window
+from random import randint
 from pygame import QUIT, Color
 from pygame.time import Clock, get_ticks
 from pygame.event import get as get_events
@@ -38,6 +39,8 @@ def create_game(window):
     game.clock = Clock()
     game.small_dot = create_dot("red", [50, 100], 30, [1, 2])
     game.big_dot = create_dot("blue", [200, 100], 40, [2, 1])
+    randomize_dot(game.window, game.small_dot)
+    randomize_dot(game.window, game.big_dot)
     game.score = 0
     return game
 
@@ -57,6 +60,15 @@ def create_dot(color, center, radius, velocity):
     dot.radius = radius
     dot.velocity = velocity
     return dot
+
+
+def randomize_dot(window, dot):
+    # Randomize the x and y int coords of the center of the dot
+    # - window is the Window that the game is played in
+    # - dot is the Dot to randomize
+    size = [window.get_width(), window.get_height()]
+    for index in range(2):
+        dot.center[index] = randint(dot.radius, size[index] - dot.radius)
 
 
 def play_game(game):
