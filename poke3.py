@@ -5,7 +5,7 @@
 
 from uagame import Window
 from pygame import QUIT, Color
-from pygame.time import Clock
+from pygame.time import Clock, get_ticks
 from pygame.event import get as get_events
 from pygame.draw import circle as draw_circle
 
@@ -38,6 +38,7 @@ def create_game(window):
     game.clock = Clock()
     game.small_dot = create_dot("red", [50, 100], 30, [1, 2])
     game.big_dot = create_dot("blue", [200, 100], 40, [2, 1])
+    game.score = 0
     return game
 
 
@@ -84,9 +85,19 @@ def draw_game(game):
     # - game is the Game to draw for
 
     game.window.clear()
+    draw_score(game.window)
     draw_dot(game.window, game.small_dot)
     draw_dot(game.window, game.big_dot)
     game.window.update()
+
+
+def draw_score(window):
+    # Draw scoreboard until the player presses the close icon.
+    # - window is the Window that the game is played in
+    score = get_ticks() / 1000  # turn milisecods to seconds
+    score_string = "Score: %d" % score
+    window.draw_string(score_string, 0 , 0)
+    window.set_font_size(70)
 
 
 def draw_dot(window, dot):
@@ -135,6 +146,7 @@ class Game:
     # - clock
     # - small_dot
     # - big_dot
+    # - score
     pass
 
 
