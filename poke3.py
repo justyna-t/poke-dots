@@ -1,7 +1,8 @@
 # Poke the Dots V3
-# This is a graphical game where two dots move around the screen, bouncing off
-# the edges.
-
+# This is a graphical game where two dots move around the screen, bouncing
+# off the edges. The user tries to prevent the dots from colliding by
+# pressing and releasing the mouse button to teleport the dots to a random
+# location. The score is the number of seconds from the start of the game.
 
 from uagame import Window
 from random import randint
@@ -63,9 +64,11 @@ def create_dot(color, center, radius, velocity):
 
 
 def randomize_dot(window, dot):
-    # Randomize the x and y int coords of the center of the dot
+    # Randomize the x and y int coords of the center of the dot. Ensure that
+    # no part of a dot extends beyond the surface boundary.
     # - window is the Window that the game is played in
     # - dot is the Dot to randomize
+
     size = [window.get_width(), window.get_height()]
     for index in range(2):
         dot.center[index] = randint(dot.radius, size[index] - dot.radius)
@@ -109,6 +112,7 @@ def draw_game(game):
 def draw_score(game):
     # Draw scoreboard until the player presses the close icon.
     # - game is the Game to draw for
+
     game.score = get_ticks() / 1000  # turn milisecods to seconds
     score_string = "Score: %d" % game.score
     game.window.draw_string(score_string, 0, 0)
