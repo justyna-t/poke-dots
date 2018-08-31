@@ -23,9 +23,12 @@ def main():
 
 
 def create_window():
-    # Create a window for the game, open it, and return it.
+    # Create a Window for the game, open it, and return it.
 
     window = Window("Poke the Dots", 500, 400)
+    window.set_font_name('ariel')
+    window.set_font_size(64)
+    window.set_font_color('white')
     window.set_bg_color("black")
     return window
 
@@ -116,7 +119,6 @@ def draw_score(game):
     game.score = get_ticks() / 1000  # turn milisecods to seconds
     score_string = "Score: %d" % game.score
     game.window.draw_string(score_string, 0, 0)
-    game.window.set_font_size(70)
 
 
 def draw_dot(window, dot):
