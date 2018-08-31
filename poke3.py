@@ -91,8 +91,8 @@ def handle_events(game):
         if event.type == QUIT:
             game.close_selected = True
         elif event.type == MOUSEBUTTONUP:
-                randomize_dot(game.window, game.small_dot)
-                randomize_dot(game.window, game.big_dot)
+            randomize_dot(game.window, game.small_dot)
+            randomize_dot(game.window, game.big_dot)
 
 
 def draw_game(game):
@@ -108,10 +108,10 @@ def draw_game(game):
 
 def draw_score(game):
     # Draw scoreboard until the player presses the close icon.
-    #- game is the Game to draw for
+    # - game is the Game to draw for
     game.score = get_ticks() / 1000  # turn milisecods to seconds
     score_string = "Score: %d" % game.score
-    game.window.draw_string(score_string, 0 , 0)
+    game.window.draw_string(score_string, 0, 0)
     game.window.set_font_size(70)
 
 
