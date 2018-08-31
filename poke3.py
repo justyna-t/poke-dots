@@ -116,7 +116,6 @@ def draw_score(game):
     # Draw scoreboard until the player presses the close icon.
     # - game is the Game to draw for
 
-    game.score = get_ticks() / 1000  # turn milisecods to seconds
     score_string = "Score: %d" % game.score
     game.window.draw_string(score_string, 0, 0)
 
@@ -140,7 +139,7 @@ def update_game(game):
     move_dot(game.window, game.big_dot)
     # control frame rate
     sleep(0.01)
-    game.score = get_ticks() / 1000
+    game.score = get_ticks() / 1000 # turn milisecods to seconds
 
 
 def move_dot(window, dot):
