@@ -5,8 +5,9 @@
 
 from uagame import Window
 from random import randint
+from time import sleep
 from pygame import QUIT, MOUSEBUTTONUP, Color
-from pygame.time import Clock, get_ticks
+from pygame.time import get_ticks
 from pygame.event import get as get_events
 from pygame.draw import circle as draw_circle
 
@@ -36,7 +37,6 @@ def create_game(window):
     game.window = window
     game.frame_rate = 90  # larger is faster game
     game.close_selected = False
-    game.clock = Clock()
     game.small_dot = create_dot("red", [50, 100], 30, [1, 2])
     game.big_dot = create_dot("blue", [200, 100], 40, [2, 1])
     randomize_dot(game.window, game.small_dot)
@@ -133,7 +133,8 @@ def update_game(game):
     move_dot(game.window, game.small_dot)
     move_dot(game.window, game.big_dot)
     # control frame rate
-    game.clock.tick(game.frame_rate)
+    sleep(0.01)
+    game.score = get_ticks() / 1000
 
 
 def move_dot(window, dot):
@@ -158,7 +159,6 @@ class Game:
     # - window
     # - frame_rate
     # - close_selected
-    # - clock
     # - small_dot
     # - big_dot
     # - score
