@@ -14,14 +14,19 @@ from pygame.draw import circle as draw_circle
 
 # User-defined functions
 
+
 def main():
     game = Game()
     game.play()
+
+# User-defined classes
 
 
 class Game:
     # An object in this class represents a complete game.
     def __init__(self):
+        # Initialize a Game.
+        # - self is the Game to initialize
         self.frame_rate = 90  # larger is faster game
         self.close_selected = False
         self.score = 0
@@ -42,7 +47,9 @@ class Game:
         self.big_dot.randomize(self.window)
 
     def play(self):
-        # Play the game until the player presses the close icon.
+        # Play the game until the player presses the close icon and then
+        # close the window.
+        # - self is the Game to play
 
         while not self.close_selected:
             # play frame
@@ -75,11 +82,13 @@ class Game:
         # Respond to the player releasing the mouse button by taking
         # appropriate actions.
         # - self is the Game where the mouse up occurred
+
         self.small_dot.randomize(self.window)
         self.big_dot.randomize(self.window)
 
     def draw(self):
         # Draw all game objects.
+        # - self is the Game to draw
 
         self.window.clear()
         self.draw_score()
@@ -88,7 +97,8 @@ class Game:
         self.window.update()
 
     def draw_score(self):
-        # Draw scoreboard until the player presses the close icon.
+        # Draw the time since the game began as a score.
+        # - self is the Game to draw for
 
         score_string = "Score: %d" % self.score
         self.window.draw_string(score_string, 0, 0)
@@ -96,6 +106,7 @@ class Game:
     def update(self):
         # Update all game objects with state changes that are not due to
         # user events.
+        # - self is the Game to update
 
         self.small_dot.move(self.window)
         self.big_dot.move(self.window)
@@ -108,6 +119,8 @@ class Dot:
     # An object in this class represents a colored circle that can move.
 
     def __init__(self, color, center, radius, velocity):
+        # Initialize a Dot.
+        # - self is the Dot to initialize
         # - color is the str color of the dot
         # - center is a list containing the x and y int coords of the center
         # of the dot
@@ -123,7 +136,8 @@ class Dot:
     def move(self, window):
         # Change the location and the velocity of the Dot so it remains on the
         # surface by bouncing from its edges.
-        # - window is the Window that the game is played in
+        # - self is the Dot
+        # - window is the game's Window
 
         size = [window.get_width(), window.get_height()]
         for index in range(2):
@@ -136,17 +150,19 @@ class Dot:
                 self.velocity[index] = -self.velocity[index]
 
     def draw(self, window):
-        # Draw the Dot on the window.
-        # - window is the Window that the game is played in
-
+        # Draw the Dot on the surface.
+        # - self is the Dot
+        # - window is the game's Window
         surface = window.get_surface()
         color = Color(self.color)
         draw_circle(surface, color, self.center, self.radius)
 
     def randomize(self, window):
-        # Randomize the x and y int coords of the center of the Dot.
-        # Ensure that no part of a dot extends beyond the surface boundary.
-        # - window is the Window that the game is played in
+        # Change the dot so that its center is at a random point on the
+        # surface. Ensure that no part of a dot extends beyond the surface
+        # boundary.
+        # - self is the Dot
+        # - window is the game's Window
 
         size = [window.get_width(), window.get_height()]
         for index in range(2):
