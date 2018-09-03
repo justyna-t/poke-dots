@@ -173,7 +173,7 @@ class Dot:
         size = [window.get_width(), window.get_height()]
         for index in range(2):
             self._center[index] = randint(self._radius,
-                                         size[index] - self._radius)
+                                          size[index] - self._radius)
 
 
 main()
