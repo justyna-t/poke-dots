@@ -31,12 +31,9 @@ class Game:
         self._close_selected = False
         self._score = 0
 
-        # create window
+        # create and adjust window
         self._window = Window("Poke the Dots", 500, 400)
-        self._window.set_font_name('ariel')
-        self._window.set_font_size(64)
-        self._window.set_font_color('white')
-        self._window.set_bg_color("black")
+        self._adjust_window()
 
         # create dots
         self._small_dot = Dot("red", [50, 100], 30, [1, 2])
@@ -45,6 +42,15 @@ class Game:
         # randomize dots
         self._small_dot.randomize(self._window)
         self._big_dot.randomize(self._window)
+
+    def _adjust_window(self):
+        # Adjust the window for the game.
+        # - self is the Game to adjust the window for
+
+        self._window.set_font_name('ariel')
+        self._window.set_font_size(64)
+        self._window.set_font_color('white')
+        self._window.set_bg_color('black')
 
     def play(self):
         # Play the game until the player presses the close icon and then
