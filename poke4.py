@@ -65,16 +65,26 @@ class Game:
     def handle_events(self):
         # Handle the current game events by changing the game state
         # appropriately.
+        # - self is the Game whose events will be handled
+
         event_list = get_events()
         for event in event_list:
-            # handle one event
-            if event.type == QUIT:
-                self.close_selected = True
-            elif event.type == MOUSEBUTTONUP:
-                self.handle_mouse_click()
+            self.handle_one_event(event)
 
-    def handle_mouse_click(self):
-        # Randomize the x and y int coords of the center of the Dots.
+    def handle_one_event(self, event):
+        # Handle one event by changing the game state appropriately.
+        # - self is the Game whose event will be handled
+        # - event is the Event object to handle
+
+        if event.type == QUIT:
+            self.close_selected = True
+        elif event.type == MOUSEBUTTONUP:
+            self.handle_mouse_up()
+
+    def handle_mouse_up(self):
+        # Respond to the player releasing the mouse button by taking
+        # appropriate actions.
+        # - self is the Game where the mouse up occurred
         self.small_dot.randomize(self.window)
         self.big_dot.randomize(self.window)
 
