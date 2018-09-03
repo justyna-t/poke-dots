@@ -27,37 +27,37 @@ class Game:
     def __init__(self):
         # Initialize a Game.
         # - self is the Game to initialize
-        self.frame_rate = 90  # larger is faster game
-        self.close_selected = False
-        self.score = 0
+        self._frame_rate = 90  # larger is faster game
+        self._close_selected = False
+        self._score = 0
 
         # create window
-        self.window = Window("Poke the Dots", 500, 400)
-        self.window.set_font_name('ariel')
-        self.window.set_font_size(64)
-        self.window.set_font_color('white')
-        self.window.set_bg_color("black")
+        self._window = Window("Poke the Dots", 500, 400)
+        self._window.set_font_name('ariel')
+        self._window.set_font_size(64)
+        self._window.set_font_color('white')
+        self._window.set_bg_color("black")
 
         # create dots
-        self.small_dot = Dot("red", [50, 100], 30, [1, 2])
-        self.big_dot = Dot("blue", [200, 100], 40, [2, 1])
+        self._small_dot = Dot("red", [50, 100], 30, [1, 2])
+        self._big_dot = Dot("blue", [200, 100], 40, [2, 1])
 
         # randomize dots
-        self.small_dot.randomize(self.window)
-        self.big_dot.randomize(self.window)
+        self._small_dot.randomize(self._window)
+        self._big_dot.randomize(self._window)
 
     def play(self):
         # Play the game until the player presses the close icon and then
         # close the window.
         # - self is the Game to play
 
-        while not self.close_selected:
+        while not self._close_selected:
             # play frame
             self.handle_events()
             self.draw()
             self.update()
         else:
-            self.window.close()
+            self._window.close()
 
     def handle_events(self):
         # Handle the current game events by changing the game state
@@ -74,7 +74,7 @@ class Game:
         # - event is the Event object to handle
 
         if event.type == QUIT:
-            self.close_selected = True
+            self._close_selected = True
         elif event.type == MOUSEBUTTONUP:
             self.handle_mouse_up()
 
@@ -83,36 +83,36 @@ class Game:
         # appropriate actions.
         # - self is the Game where the mouse up occurred
 
-        self.small_dot.randomize(self.window)
-        self.big_dot.randomize(self.window)
+        self._small_dot.randomize(self._window)
+        self._big_dot.randomize(self._window)
 
     def draw(self):
         # Draw all game objects.
         # - self is the Game to draw
 
-        self.window.clear()
+        self._window.clear()
         self.draw_score()
-        self.small_dot.draw(self.window)
-        self.big_dot.draw(self.window)
-        self.window.update()
+        self._small_dot.draw(self._window)
+        self._big_dot.draw(self._window)
+        self._window.update()
 
     def draw_score(self):
         # Draw the time since the game began as a score.
         # - self is the Game to draw for
 
-        score_string = "Score: %d" % self.score
-        self.window.draw_string(score_string, 0, 0)
+        score_string = "Score: %d" % self._score
+        self._window.draw_string(score_string, 0, 0)
 
     def update(self):
         # Update all game objects with state changes that are not due to
         # user events.
         # - self is the Game to update
 
-        self.small_dot.move(self.window)
-        self.big_dot.move(self.window)
+        self._small_dot.move(self._window)
+        self._big_dot.move(self._window)
         # control frame rate
         sleep(0.01)
-        self.score = get_ticks() / 1000  # turn milisecods to seconds
+        self._score = get_ticks() / 1000  # turn milisecods to seconds
 
 
 class Dot:
@@ -128,10 +128,10 @@ class Dot:
         # - velocity is the list of horizontal int and vertical int speeds of
         # the dot
 
-        self.color = color
-        self.center = center
-        self.radius = radius
-        self.velocity = velocity
+        self._color = color
+        self._center = center
+        self._radius = radius
+        self._velocity = velocity
 
     def move(self, window):
         # Change the location and the velocity of the Dot so it remains on the
@@ -142,20 +142,20 @@ class Dot:
         size = [window.get_width(), window.get_height()]
         for index in range(2):
             # update center at coordinate
-            self.center[index] += self.velocity[index]
+            self._center[index] += self._velocity[index]
             # dot edge outside window?
-            if self.center[index] + self.radius >= size[index] or\
-               self.center[index] - self.radius <= 0:
+            if self._center[index] + self._radius >= size[index] or\
+               self._center[index] - self._radius <= 0:
                 # change direction
-                self.velocity[index] = -self.velocity[index]
+                self._velocity[index] = -self._velocity[index]
 
     def draw(self, window):
         # Draw the Dot on the surface.
         # - self is the Dot
         # - window is the game's Window
         surface = window.get_surface()
-        color = Color(self.color)
-        draw_circle(surface, color, self.center, self.radius)
+        color = Color(self._color)
+        draw_circle(surface, color, self._center, self._radius)
 
     def randomize(self, window):
         # Change the dot so that its center is at a random point on the
@@ -166,8 +166,8 @@ class Dot:
 
         size = [window.get_width(), window.get_height()]
         for index in range(2):
-            self.center[index] = randint(self.radius,
-                                         size[index] - self.radius)
+            self._center[index] = randint(self._radius,
+                                         size[index] - self._radius)
 
 
 main()
