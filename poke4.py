@@ -16,103 +16,92 @@ from pygame.draw import circle as draw_circle
 
 
 def main():
-    window = create_window()
-    game = create_game(window)
-    play_game(game)
-    window.close()
+    game = create_game()
+    game.play()
 
 
-def create_window():
-    # Create a Window for the game, open it, and return it.
-
-    window = Window("Poke the Dots", 500, 400)
-    window.set_font_name('ariel')
-    window.set_font_size(64)
-    window.set_font_color('white')
-    window.set_bg_color("black")
-    return window
-
-
-def create_game(window):
-    # Create a Game object for Poke the Dots.
-    # - window is the Window that the game is played in
-
-    game = Game()
-    game.window = window
-    game.frame_rate = 90  # larger is faster game
-    game.close_selected = False
-    game.small_dot = Dot("red", [50, 100], 30, [1, 2])
-    game.big_dot = Dot("blue", [200, 100], 40, [2, 1])
-    game.small_dot.randomize(game.window)
-    game.big_dot.randomize(game.window)
-    game.score = 0
+def create_game():
+    # Create a Game object for Poke the Dots and return it.
+    frame_rate = 90  # larger is faster game
+    close_selected = False
+    score = 0
+    game = Game(frame_rate, close_selected, score)
     return game
-
-
-def play_game(game):
-    # Play the game until the player presses the close icon.
-    # - game is the Game to play
-
-    while not game.close_selected:
-        # play frame
-        handle_events(game)
-        draw_game(game)
-        update_game(game)
-
-
-def handle_events(game):
-    # Handle the current game events by changing the game state appropriately.
-    # - game is the Game whose events will be handled
-    event_list = get_events()
-    for event in event_list:
-        # handle one event
-        if event.type == QUIT:
-            game.close_selected = True
-        elif event.type == MOUSEBUTTONUP:
-            game.small_dot.randomize(game.window)
-            game.big_dot.randomize(game.window)
-
-
-def draw_game(game):
-    # Draw all game objects.
-    # - game is the Game to draw for
-
-    game.window.clear()
-    draw_score(game)
-    game.small_dot.draw(game.window)
-    game.big_dot.draw(game.window)
-    game.window.update()
-
-
-def draw_score(game):
-    # Draw scoreboard until the player presses the close icon.
-    # - game is the Game to draw for
-
-    score_string = "Score: %d" % game.score
-    game.window.draw_string(score_string, 0, 0)
-
-
-def update_game(game):
-    # Update all game objects with state changes that are not due to
-    # user events.
-    # - game is the Game to update
-
-    game.small_dot.move(game.window)
-    game.big_dot.move(game.window)
-    # control frame rate
-    sleep(0.01)
-    game.score = get_ticks() / 1000  # turn milisecods to seconds
 
 
 class Game:
     # An object in this class represents a complete game.
-    # - window
-    # - frame_rate
-    # - close_selected
-    # - small_dot
-    # - big_dot
-    # - score
-    pass
+    def __init__(self, frame_rate, close_selected, score):
+        self.frame_rate = frame_rate
+        self.close_selected = close_selected
+        self.score = score
+
+        # create window
+        self.window = Window("Poke the Dots", 500, 400)
+        self.window.set_font_name('ariel')
+        self.window.set_font_size(64)
+        self.window.set_font_color('white')
+        self.window.set_bg_color("black")
+
+        # create dots
+        self.small_dot = Dot("red", [50, 100], 30, [1, 2])
+        self.big_dot = Dot("blue", [200, 100], 40, [2, 1])
+
+        # randomize dots
+        self.small_dot.randomize(self.window)
+        self.big_dot.randomize(self.window)
+
+    def play(self):
+        # Play the game until the player presses the close icon.
+
+        while not self.close_selected:
+            # play frame
+            self.handle_events()
+            self.draw()
+            self.update()
+        else:
+            self.window.close()
+
+    def handle_events(self):
+        # Handle the current game events by changing the game state
+        # appropriately.
+        event_list = get_events()
+        for event in event_list:
+            # handle one event
+            if event.type == QUIT:
+                self.close_selected = True
+            elif event.type == MOUSEBUTTONUP:
+                self.handle_mouse_click()
+
+    def handle_mouse_click(self):
+        # Randomize the x and y int coords of the center of the Dots.
+        self.small_dot.randomize(self.window)
+        self.big_dot.randomize(self.window)
+
+    def draw(self):
+        # Draw all game objects.
+
+        self.window.clear()
+        self.draw_score()
+        self.small_dot.draw(self.window)
+        self.big_dot.draw(self.window)
+        self.window.update()
+
+    def draw_score(self):
+        # Draw scoreboard until the player presses the close icon.
+
+        score_string = "Score: %d" % self.score
+        self.window.draw_string(score_string, 0, 0)
+
+    def update(self):
+        # Update all game objects with state changes that are not due to
+        # user events.
+
+        self.small_dot.move(self.window)
+        self.big_dot.move(self.window)
+        # control frame rate
+        sleep(0.01)
+        self.score = get_ticks() / 1000  # turn milisecods to seconds
 
 
 class Dot:
