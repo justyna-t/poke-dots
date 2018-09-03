@@ -41,10 +41,10 @@ def create_game(window):
     game.window = window
     game.frame_rate = 90  # larger is faster game
     game.close_selected = False
-    game.small_dot = Dot("red", [50, 100], 30, [1, 2], game.window)
-    game.big_dot = Dot("blue", [200, 100], 40, [2, 1], game.window)
-    game.small_dot.randomize()
-    game.big_dot.randomize()
+    game.small_dot = Dot("red", [50, 100], 30, [1, 2])
+    game.big_dot = Dot("blue", [200, 100], 40, [2, 1])
+    game.small_dot.randomize(game.window)
+    game.big_dot.randomize(game.window)
     game.score = 0
     return game
 
@@ -69,8 +69,8 @@ def handle_events(game):
         if event.type == QUIT:
             game.close_selected = True
         elif event.type == MOUSEBUTTONUP:
-            game.small_dot.randomize()
-            game.big_dot.randomize()
+            game.small_dot.randomize(game.window)
+            game.big_dot.randomize(game.window)
 
 
 def draw_game(game):
@@ -79,8 +79,8 @@ def draw_game(game):
 
     game.window.clear()
     draw_score(game)
-    game.small_dot.draw()
-    game.big_dot.draw()
+    game.small_dot.draw(game.window)
+    game.big_dot.draw(game.window)
     game.window.update()
 
 
@@ -97,8 +97,8 @@ def update_game(game):
     # user events.
     # - game is the Game to update
 
-    game.small_dot.move()
-    game.big_dot.move()
+    game.small_dot.move(game.window)
+    game.big_dot.move(game.window)
     # control frame rate
     sleep(0.01)
     game.score = get_ticks() / 1000  # turn milisecods to seconds
@@ -118,26 +118,25 @@ class Game:
 class Dot:
     # An object in this class represents a colored circle that can move.
 
-    def __init__(self, color, center, radius, velocity, window):
+    def __init__(self, color, center, radius, velocity):
         # - color is the str color of the dot
         # - center is a list containing the x and y int coords of the center
         # of the dot
         # - radius is the int pixel radius of the dot
         # - velocity is the list of horizontal int and vertical int speeds of
         # the dot
-        # - window is the Window that the game is played in
-        
+
         self.color = color
         self.center = center
         self.radius = radius
         self.velocity = velocity
-        self.window = window
 
-    def move(self):
+    def move(self, window):
         # Change the location and the velocity of the Dot so it remains on the
         # surface by bouncing from its edges.
+        # - window is the Window that the game is played in
 
-        size = [self.window.get_width(), self.window.get_height()]
+        size = [window.get_width(), window.get_height()]
         for index in range(2):
             # update center at coordinate
             self.center[index] += self.velocity[index]
@@ -147,18 +146,20 @@ class Dot:
                 # change direction
                 self.velocity[index] = -self.velocity[index]
 
-    def draw(self):
+    def draw(self, window):
         # Draw the Dot on the window.
+        # - window is the Window that the game is played in
 
-        surface = self.window.get_surface()
+        surface = window.get_surface()
         color = Color(self.color)
         draw_circle(surface, color, self.center, self.radius)
 
-    def randomize(self):
+    def randomize(self, window):
         # Randomize the x and y int coords of the center of the Dot.
         # Ensure that no part of a dot extends beyond the surface boundary.
+        # - window is the Window that the game is played in
 
-        size = [self.window.get_width(), self.window.get_height()]
+        size = [window.get_width(), window.get_height()]
         for index in range(2):
             self.center[index] = randint(self.radius,
                                          size[index] - self.radius)
