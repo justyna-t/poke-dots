@@ -14,27 +14,17 @@ from pygame.draw import circle as draw_circle
 
 # User-defined functions
 
-
 def main():
-    game = create_game()
+    game = Game()
     game.play()
-
-
-def create_game():
-    # Create a Game object for Poke the Dots and return it.
-    frame_rate = 90  # larger is faster game
-    close_selected = False
-    score = 0
-    game = Game(frame_rate, close_selected, score)
-    return game
 
 
 class Game:
     # An object in this class represents a complete game.
-    def __init__(self, frame_rate, close_selected, score):
-        self.frame_rate = frame_rate
-        self.close_selected = close_selected
-        self.score = score
+    def __init__(self):
+        self.frame_rate = 90  # larger is faster game
+        self.close_selected = False
+        self.score = 0
 
         # create window
         self.window = Window("Poke the Dots", 500, 400)
