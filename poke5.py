@@ -8,6 +8,7 @@
 from uagame import Window
 from random import randint
 from time import sleep
+from math import sqrt
 from pygame import QUIT, MOUSEBUTTONUP, Color
 from pygame.time import get_ticks
 from pygame.event import get as get_events
@@ -31,6 +32,7 @@ class Game:
         self._frame_rate = 90  # larger is faster game
         self._close_selected = False
         self._score = 0
+        self._continue_game = True
 
         # create and adjust window
         self._window = Window("Poke the Dots", 500, 400)
@@ -82,7 +84,7 @@ class Game:
 
         if event.type == QUIT:
             self._close_selected = True
-        elif event.type == MOUSEBUTTONUP:
+        elif self._continue_game and event.type == MOUSEBUTTONUP:
             self.handle_mouse_up()
 
     def handle_mouse_up(self):
@@ -101,6 +103,8 @@ class Game:
         self.draw_score()
         self._small_dot.draw(self._window)
         self._big_dot.draw(self._window)
+        if not self._continue_game:
+            self.draw_game_over()
         self._window.update()
 
     def draw_score(self):
@@ -110,16 +114,36 @@ class Game:
         score_string = "Score: %d" % self._score
         self._window.draw_string(score_string, 0, 0)
 
+    def draw_game_over(self):
+        if self._continue_game == False:
+            background = self._window.get_bg_color()
+            font_color = self._window.get_font_color()
+            game_over_background = self._big_dot.get_color()
+            game_over_font_color = self._small_dot.get_color()
+            height = self._window.get_height()
+            string_height = self._window.get_font_height()
+            game_over = "GAME OVER"
+            self._window.set_bg_color(game_over_background)
+            self._window.set_font_color(game_over_font_color)
+            self._window.draw_string(game_over, 0, height - string_height)
+            self._window.set_bg_color(background)
+            self._window.set_font_color(font_color)
+
+
+
     def update(self):
         # Update all game objects with state changes that are not due to
         # user events.
         # - self is the Game to update
 
-        self._small_dot.move(self._window)
-        self._big_dot.move(self._window)
+        if self._continue_game:
+            self._small_dot.move(self._window)
+            self._big_dot.move(self._window)
+            self._score = get_ticks() / 1000  # turn milisecods to seconds
         # control frame rate
         sleep(0.01)
-        self._score = get_ticks() / 1000  # turn milisecods to seconds
+        if self._small_dot.intersects(self._big_dot):
+            self._continue_game = False
 
 
 class Dot:
@@ -175,6 +199,14 @@ class Dot:
         for index in range(2):
             self._center[index] = randint(self._radius,
                                           size[index] - self._radius)
+
+    def get_color(self):
+        return self._color
+
+    def intersects(self, dot):
+        distance = sqrt((self._center[0] - dot._center[0])**2 +
+                        (self._center[1] - dot._center[1])**2 )
+        return distance <= (self._radius + dot._radius)
 
 
 main()
