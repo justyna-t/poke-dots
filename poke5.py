@@ -3,7 +3,7 @@
 # off the edges. When the dots collide, the game ends. The user tries to
 # prevent the dots from colliding by pressing and releasing the mouse button
 # to teleport the dots to a random location. The score is the number of
-# seconds from the start of the game.
+# seconds from the start of the game until the dots collide.
 
 from uagame import Window
 from random import randint
@@ -115,6 +115,11 @@ class Game:
         self._window.draw_string(score_string, 0, 0)
 
     def draw_game_over(self):
+        # Draw GAME OVER in the lower left corner of the surface, using
+        # the small dot's color for the font and the big dot's color as
+        # the background.
+        # - self is the Game to draw for
+
         if self._continue_game == False:
             background = self._window.get_bg_color()
             font_color = self._window.get_font_color()
@@ -129,19 +134,21 @@ class Game:
             self._window.set_bg_color(background)
             self._window.set_font_color(font_color)
 
-
-
     def update(self):
         # Update all game objects with state changes that are not due to
-        # user events.
+        # user events. Determine if the game should continue.
         # - self is the Game to update
 
         if self._continue_game:
+            # update during game
             self._small_dot.move(self._window)
             self._big_dot.move(self._window)
             self._score = get_ticks() / 1000  # turn milisecods to seconds
+
         # control frame rate
         sleep(0.01)
+
+        # decide continue
         if self._small_dot.intersects(self._big_dot):
             self._continue_game = False
 
@@ -201,9 +208,16 @@ class Dot:
                                           size[index] - self._radius)
 
     def get_color(self):
+        # Return a str that represesents the color of the dot.
+        # - self is the Dot
+
         return self._color
 
     def intersects(self, dot):
+        # Return True if the two dots intersect and False if they do not.
+        # - self is a Dot
+        # - dot is the other Dot
+
         distance = sqrt((self._center[0] - dot._center[0])**2 +
                         (self._center[1] - dot._center[1])**2 )
         return distance <= (self._radius + dot._radius)
