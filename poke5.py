@@ -120,7 +120,7 @@ class Game:
         # the background.
         # - self is the Game to draw for
 
-        if self._continue_game == False:
+        if self._continue_game is False:
             background = self._window.get_bg_color()
             font_color = self._window.get_font_color()
             game_over_background = self._big_dot.get_color()
@@ -219,7 +219,7 @@ class Dot:
         # - dot is the other Dot
 
         distance = sqrt((self._center[0] - dot._center[0])**2 +
-                        (self._center[1] - dot._center[1])**2 )
+                        (self._center[1] - dot._center[1])**2)
         return distance <= (self._radius + dot._radius)
 
 
