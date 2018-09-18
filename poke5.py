@@ -182,8 +182,8 @@ class Dot:
             # update center at coordinate
             self._center[index] += self._velocity[index]
             # dot edge outside window?
-            if self._center[index] + self._radius >= size[index] or\
-               self._center[index] - self._radius <= 0:
+            if self._center[index] + self._radius > size[index] or\
+               self._center[index] < self._radius:
                 # change direction
                 self._velocity[index] = -self._velocity[index]
 
