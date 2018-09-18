@@ -10,5 +10,5 @@ after game over, player should press ENTER.
 ## How to run
 
 ```
-$ python3 poke5.py
+$ python3 poke6.py
 ```
