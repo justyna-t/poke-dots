@@ -47,7 +47,7 @@ class Game:
 
         # randomize dots
         self._small_dot.randomize(self._window)
-        self._big_dot.randomize(self._window)
+        self._small_dot.randomize_second_dot(self._window, self._big_dot, 200)
 
     def _adjust_window(self):
         # Adjust the window for the game.
@@ -99,7 +99,7 @@ class Game:
         # - self is the Game where the mouse up occurred
 
         self._small_dot.randomize(self._window)
-        self._big_dot.randomize(self._window)
+        self._small_dot.randomize_second_dot(self._window, self._big_dot, 30)
 
     def draw(self):
         # Draw all game objects.
@@ -166,7 +166,7 @@ class Game:
         sleep(0.01)
 
         # decide continue
-        if self._small_dot.intersects(self._big_dot):
+        if self._small_dot.intersects(self._big_dot, 0):
             self._continue_game = False
 
         # reset game
@@ -175,7 +175,8 @@ class Game:
             self._continue_game = True
             self._reset = False
             self._small_dot.randomize(self._window)
-            self._big_dot.randomize(self._window)
+            self._small_dot.randomize_second_dot(self._window, self._big_dot,
+                                                 200)
 
 
 class Dot:
@@ -238,14 +239,27 @@ class Dot:
 
         return self._color
 
-    def intersects(self, dot):
+    def intersects(self, dot, min_distance):
         # Return True if the two dots intersect and False if they do not.
         # - self is a Dot
         # - dot is the other Dot
+        # - min_distance is minimum distance between dot's edges
 
         distance = sqrt((self._center[0] - dot._center[0])**2 +
                         (self._center[1] - dot._center[1])**2)
-        return distance <= (self._radius + dot._radius)
+        return distance <= (self._radius + dot._radius) + min_distance
+
+    def randomize_second_dot(self, window, dot, min_distance):
+        # Change the second dot's center until distance between dot's edges is
+        # larger than minimum distance.
+        # - self is a Dot
+        # - window is the game's Window
+        # - dot is the other Dot
+        # - min_distance is minimum distance between dot's edges
+
+        dot.randomize(window)
+        while self.intersects(dot, min_distance):
+            dot.randomize(window)
 
 
 main()
