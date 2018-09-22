@@ -30,7 +30,6 @@ class Game:
     def __init__(self):
         # Initialize a Game.
         # - self is the Game to initialize
-        self._frame_rate = 90  # larger is faster game
         self._close_selected = False
         self._score = 0
         self._last_score = 0
