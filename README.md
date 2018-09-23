@@ -13,3 +13,5 @@ player should press ENTER.
 ```
 $ python3 poke7.py
 ```
+
+Versions 6 and 7 are independent of the course and are my own solution.
